@@ -14,7 +14,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         origin = transform.position;
-        range = new Vector3(4.0f, 4.0f, 0.0f);
+        range = Random.insideUnitCircle * 4.5f;
         waitTime = 0.0f;
         spawned = false;
     }
