@@ -6,17 +6,22 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject circle;
+    public GameObject scoreMan;
     private GameObject c;
     private Vector3 range, origin;
     private float waitTime;
     private bool spawned;
+    public bool destroyed;
     // Start is called before the first frame update
     void Start()
     {
+        destroyed = false;
         origin = transform.position;
-        range = Random.insideUnitCircle * 4.5f;
+        range = Random.insideUnitCircle * 5.0f;
         waitTime = 0.0f;
         spawned = false;
+        scoreMan = GameObject.FindWithTag("Score");
+
     }
 
     // Update is called once per frame
@@ -28,6 +33,8 @@ public class Spawner : MonoBehaviour
                                           Random.Range(-range.y, range.y),
                                           0);
         Vector3 randomCoordinate = origin + randomRange;
+
+        //TODO: Make the wait_time less and less the more circles are destroyed
         if (!spawned)
         {
             c = Instantiate(circle, randomCoordinate, Quaternion.identity);
@@ -42,6 +49,11 @@ public class Spawner : MonoBehaviour
             Destroy(c);
             spawned = false;
             waitTime = 0.0f;
+        }
+        if (destroyed)
+        {
+            scoreMan.GetComponent<Score>().IncrementScore();
+            destroyed = false;
         }
     }
 }
